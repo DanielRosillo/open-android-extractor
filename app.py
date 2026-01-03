@@ -549,6 +549,7 @@ class ADBTool(tk.Tk):
     def export_sms_full(self):
         def task():
             OUT = f"/storage/emulated/0/Android/data/{ADBTool.PKG}/files/sms_export_full.txt"
+            DEST = os.path.join(os.getcwd(), ADBTool.DEVICE_ID)
 
             try:
                 android_version = subprocess.check_output(
@@ -581,8 +582,7 @@ class ADBTool(tk.Tk):
                     f"adb shell monkey -p {ADBTool.PKG} -c android.intent.category.LAUNCHER 1",
                     sleep_time=10
                 )
-
-                self.run(f'adb pull "{OUT}" "{ADBTool.DEVICE_ID}/"')
+                self.run('adb pull "'+OUT+'" "{}"'.format(DEST),)
 
                 self.run(f"adb uninstall {ADBTool.PKG}")
 
@@ -615,7 +615,7 @@ class ADBTool(tk.Tk):
     def export_contacts_full(self):
         def task():
             OUT = f"/storage/emulated/0/Android/data/{ADBTool.PKG}/files/contacts.vcf"
-
+            DEST = os.path.join(os.getcwd(), ADBTool.DEVICE_ID)
             try:
                 android_version = subprocess.check_output(
                     "adb shell getprop ro.build.version.release",
@@ -650,7 +650,7 @@ class ADBTool(tk.Tk):
                     sleep_time=10
                 )
 
-                self.run(f'adb pull "{OUT}" "{ADBTool.DEVICE_ID}/"')
+                self.run('adb pull "'+OUT+'" "{}"'.format(DEST),)
 
                 self.run(f"adb uninstall {ADBTool.PKG}")
 
@@ -667,6 +667,7 @@ class ADBTool(tk.Tk):
     def export_call_logs_full(self):
         def task():
             OUT = f"/storage/emulated/0/Android/data/{ADBTool.PKG}/files/call_export_full.csv"
+            DEST = os.path.join(os.getcwd(), ADBTool.DEVICE_ID)
 
             try:
                 android_version = subprocess.check_output(
@@ -702,7 +703,7 @@ class ADBTool(tk.Tk):
                     sleep_time=10
                 )
 
-                self.run(f'adb pull "{OUT}" "{ADBTool.DEVICE_ID}/"')
+                self.run('adb pull "'+OUT+'" "{}"'.format(DEST),)
 
                 self.run(f"adb uninstall {ADBTool.PKG}")
 
