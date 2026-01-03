@@ -5,6 +5,8 @@ It provides a clean, modern interface to perform structured data acquisition wit
 
 The tool is intended for digital forensics, technical analysis, data recovery, and Android device diagnostics.
 
+![Demo](https://github.com/DanielRosillo/open-android-extractor/blob/main/preview.png)
+
 ---
 
 ## Disclaimer
