@@ -582,7 +582,7 @@ class ADBTool(tk.Tk):
                     sleep_time=10
                 )
 
-                self.run(f'adb pull "{OUT}" "{ADBTool.DEVICE_ID}"')
+                self.run(f'adb pull "{OUT}" "{ADBTool.DEVICE_ID}/"')
 
                 self.run(f"adb uninstall {ADBTool.PKG}")
 
@@ -650,7 +650,7 @@ class ADBTool(tk.Tk):
                     sleep_time=10
                 )
 
-                self.run(f'adb pull "{OUT}" "{ADBTool.DEVICE_ID}"')
+                self.run(f'adb pull "{OUT}" "{ADBTool.DEVICE_ID}/"')
 
                 self.run(f"adb uninstall {ADBTool.PKG}")
 
@@ -702,7 +702,7 @@ class ADBTool(tk.Tk):
                     sleep_time=10
                 )
 
-                self.run(f'adb pull "{OUT}" "{ADBTool.DEVICE_ID}"')
+                self.run(f'adb pull "{OUT}" "{ADBTool.DEVICE_ID}/"')
 
                 self.run(f"adb uninstall {ADBTool.PKG}")
 
