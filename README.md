@@ -73,7 +73,7 @@ Ensure `adb` is available in your system PATH.
 ---
 
 ## Compatibility
-- Any Android device.
+- Android 6 or higher.
 
 ---
 
