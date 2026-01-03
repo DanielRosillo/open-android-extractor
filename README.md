@@ -44,7 +44,6 @@ The author is not responsible for misuse or unauthorized access.
 - Organized local output structure
 - No root required
 
----
 
 ## Interface Overview
 
@@ -59,7 +58,6 @@ OpenAndroidExtractor uses a card-based UI with clearly separated sections:
 
 A real-time console panel displays executed ADB commands and results.
 
----
 
 ## Requirements
 
@@ -70,16 +68,13 @@ A real-time console panel displays executed ADB commands and results.
 
 Ensure `adb` is available in your system PATH.
 
----
 
 ## Compatibility
 - Android 6 or higher.
 
----
 
 ## Available on Windows and Linux
 
----
 
 ## Installation
 
@@ -87,19 +82,16 @@ git clone https://github.com/danielrosillo/OpenAndroidExtractor.git
 cd OpenAndroidExtractor
 python app.py
 
----
 
 ## License
 
 OpenAndroidExtractor is released under the MIT License.
 
----
 
 ## Contributions
 
 - Contributions are welcome.
 
----
 
 ## Companion App
 
@@ -107,12 +99,10 @@ Some features may require the OpenExtractor Companion App
 installed on the target Android device to enable extended data access
 on newer Android versions.
 
----
 
 ## TODO
 - Restore options.
 
----
 
 ## Contact
 
