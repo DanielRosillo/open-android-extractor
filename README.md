@@ -18,7 +18,6 @@ The author is not responsible for misuse or unauthorized access.
 
 ## Features
 - Plug and Play
-- Automatic detection of connected Android devices
 - Dashboard with device information:
   - Android version
   - Serial number
@@ -61,7 +60,7 @@ A real-time console panel displays executed ADB commands and results.
 
 ## Requirements
 
-- Python 3.9+
+- Python 3.11+
 - Android Debug Bridge (ADB)
 - USB debugging enabled on the Android device
 - Android device connected via USB or Wifi
