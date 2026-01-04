@@ -83,8 +83,8 @@ Ensure `adb` is available in your system PATH.
 - Open the application.
 - Enjoy extracting everything ;)
 
-Note: extractor.apk must be located in the same directory as the executable.
-Note: Extracted files are saved in a folder (named with a UUID) in the same directory as the executable.
+- Note: extractor.apk must be located in the same directory as the executable.
+- Note: Extracted files are saved in a folder (named with a UUID) in the same directory as the executable.
 
 ## License
 
