@@ -1219,6 +1219,7 @@ class ADBTool(tk.Tk):
                 stderr=subprocess.DEVNULL,
                 check=True
             )
+            self.open_filde_browser()
     
 if __name__ == "__main__":
     ADBTool().mainloop()
