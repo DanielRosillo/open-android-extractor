@@ -357,7 +357,7 @@ class ADBTool(tk.Tk):
             self.card(
                 "Screenshot Device",
                 "Capture a screenshot of the device screen via ADB.",
-                "adb exec-out screencap -p > "+ADBTool.DEVICE_ID+"/screenshot__$(date +%Y%m%d_%H%M%S).png"
+                self.adb_screenshot
             )
             self.card(
                 "Screenrecord Device",
@@ -1205,5 +1205,20 @@ class ADBTool(tk.Tk):
 
         threading.Thread(target=task, daemon=True).start()
 
+    def adb_screenshot(self):
+        DEST = os.path.join(os.getcwd(), ADBTool.DEVICE_ID)
+        
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"screenshot__{timestamp}.png"
+        filepath = os.path.join(DEST, filename)
+
+        with open(filepath, "wb") as f:
+            subprocess.run(
+                ["adb", "exec-out", "screencap", "-p"],
+                stdout=f,
+                stderr=subprocess.DEVNULL,
+                check=True
+            )
+    
 if __name__ == "__main__":
     ADBTool().mainloop()
