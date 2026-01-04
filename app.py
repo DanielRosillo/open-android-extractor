@@ -233,7 +233,9 @@ class ADBTool(tk.Tk):
                     self.console.insert(tk.END, line)
                     self.console.see(tk.END)
             except Exception as e:
-                self.console.insert(tk.END, f"Error: {e}\n")
+                self.notify_error(f"ADB error: {e}")
+                self.console.insert(tk.END, f"\nError: {e}\n")
+                print( f"\nError: {e}\n")
 
         threading.Thread(target=task, daemon=True).start()
 
@@ -594,7 +596,9 @@ class ADBTool(tk.Tk):
                 self.open_filde_browser()
 
             except Exception as e:
+                self.notify_error(f"ADB error: {e}")
                 self.console.insert(tk.END, f"\nError: {e}\n")
+                print( f"\nError: {e}\n")
 
         threading.Thread(target=task, daemon=True).start()
 
@@ -660,7 +664,9 @@ class ADBTool(tk.Tk):
                 self.open_filde_browser()
 
             except Exception as e:
-                self.notify_error(f"Contacts export failed: {e}")
+                self.notify_error(f"ADB error: {e}")
+                self.console.insert(tk.END, f"\nError: {e}\n")
+                print( f"\nError: {e}\n")
 
         threading.Thread(target=task, daemon=True).start()
 
@@ -712,7 +718,9 @@ class ADBTool(tk.Tk):
                 )
                 self.open_filde_browser()
             except Exception as e:
-                self.notify_error(f"Call log export failed: {e}")
+                self.notify_error(f"ADB error: {e}")
+                self.console.insert(tk.END, f"\nError: {e}\n")
+                print( f"\nError: {e}\n")
 
         threading.Thread(target=task, daemon=True).start()
 
@@ -739,7 +747,9 @@ class ADBTool(tk.Tk):
                 self.notify_success("Full device storage backup completed.")
                 self.open_filde_browser()
             except Exception as e:
-                self.notify_error(f"Storage backup failed: {e}")
+                self.notify_error(f"ADB error: {e}")
+                self.console.insert(tk.END, f"\nError: {e}\n")
+                print( f"\nError: {e}\n")
 
         threading.Thread(target=task, daemon=True).start()
 
@@ -767,7 +777,9 @@ class ADBTool(tk.Tk):
                 self.notify_success("Screenshots backup completed.")
                 self.open_filde_browser()
             except Exception as e:
-                self.notify_error(f"Screenshots backup failed: {e}")
+                self.notify_error(f"ADB error: {e}")
+                self.console.insert(tk.END, f"\nError: {e}\n")
+                print( f"\nError: {e}\n")
 
         threading.Thread(target=task, daemon=True).start()
 
@@ -796,7 +808,9 @@ class ADBTool(tk.Tk):
                 self.open_filde_browser()
 
             except Exception as e:
-                self.notify_error(f"Recordings backup failed: {e}")
+                self.notify_error(f"ADB error: {e}")
+                self.console.insert(tk.END, f"\nError: {e}\n")
+                print( f"\nError: {e}\n")
 
         threading.Thread(target=task, daemon=True).start()
 
@@ -853,7 +867,9 @@ class ADBTool(tk.Tk):
                 self.open_filde_browser()
 
             except Exception as e:
-                self.notify_error(f"Downloads backup failed: {e}")
+                self.notify_error(f"ADB error: {e}")
+                self.console.insert(tk.END, f"\nError: {e}\n")
+                print( f"\nError: {e}\n")
 
         threading.Thread(target=task, daemon=True).start()
 
@@ -891,7 +907,9 @@ class ADBTool(tk.Tk):
                 self.open_filde_browser()
 
             except Exception as e:
-                self.notify_error(f"Meta backup failed: {e}")
+                self.notify_error(f"ADB error: {e}")
+                self.console.insert(tk.END, f"\nError: {e}\n")
+                print( f"\nError: {e}\n")
 
         threading.Thread(target=task, daemon=True).start()
 
@@ -921,7 +939,9 @@ class ADBTool(tk.Tk):
                 self.open_filde_browser()
 
             except Exception as e:
-                self.notify_error(f"Documents backup failed: {e}")
+                self.notify_error(f"ADB error: {e}")
+                self.console.insert(tk.END, f"\nError: {e}\n")
+                print( f"\nError: {e}\n")
 
         threading.Thread(target=task, daemon=True).start()
 
@@ -950,7 +970,9 @@ class ADBTool(tk.Tk):
                 self.open_filde_browser()
 
             except Exception as e:
-                self.notify_error(f"Camera backup failed: {e}")
+                self.notify_error(f"ADB error: {e}")
+                self.console.insert(tk.END, f"\nError: {e}\n")
+                print( f"\nError: {e}\n")
 
         threading.Thread(target=task, daemon=True).start()
 
@@ -978,7 +1000,9 @@ class ADBTool(tk.Tk):
                 self.notify_success("Music backup completed.")
                 self.open_filde_browser()
             except Exception as e:
-                self.notify_error(f"Music backup failed: {e}")
+                self.notify_error(f"ADB error: {e}")
+                self.console.insert(tk.END, f"\nError: {e}\n")
+                print( f"\nError: {e}\n")
 
         threading.Thread(target=task, daemon=True).start()
 
@@ -1012,7 +1036,9 @@ class ADBTool(tk.Tk):
                 self.open_filde_browser()
 
             except Exception as e:
-                self.notify_error(f"WhatsApp images backup failed: {e}")
+                self.notify_error(f"ADB error: {e}")
+                self.console.insert(tk.END, f"\nError: {e}\n")
+                print( f"\nError: {e}\n")
 
         threading.Thread(target=task, daemon=True).start()
 
@@ -1042,7 +1068,9 @@ class ADBTool(tk.Tk):
                 self.open_filde_browser()
 
             except Exception as e:
-                self.notify_error(f"Pictures backup failed: {e}")
+                self.notify_error(f"ADB error: {e}")
+                self.console.insert(tk.END, f"\nError: {e}\n")
+                print( f"\nError: {e}\n")
 
         threading.Thread(target=task, daemon=True).start()
 
@@ -1072,7 +1100,9 @@ class ADBTool(tk.Tk):
                 self.open_filde_browser()
 
             except Exception as e:
-                self.notify_error(f"Movies backup failed: {e}")
+                self.notify_error(f"ADB error: {e}")
+                self.console.insert(tk.END, f"\nError: {e}\n")
+                print( f"\nError: {e}\n")
 
         threading.Thread(target=task, daemon=True).start()
 
@@ -1118,7 +1148,9 @@ class ADBTool(tk.Tk):
 
 
             except Exception as e:
-                self.notify_error(f"Instagram backup failed: {e}")
+                self.notify_error(f"ADB error: {e}")
+                self.console.insert(tk.END, f"\nError: {e}\n")
+                print( f"\nError: {e}\n")
 
         threading.Thread(target=task, daemon=True).start()
 
@@ -1166,10 +1198,10 @@ class ADBTool(tk.Tk):
                 self.notify_success("Screen recording completed successfully.")
                 self.open_filde_browser()
 
-            except subprocess.CalledProcessError as e:
-                self.notify_error(f"ADB error: {e}")
             except Exception as e:
-                self.notify_error(f"Unexpected error: {e}")
+                self.notify_error(f"ADB error: {e}")
+                self.console.insert(tk.END, f"\nError: {e}\n")
+                print( f"\nError: {e}\n")
 
         threading.Thread(target=task, daemon=True).start()
 
