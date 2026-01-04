@@ -7,6 +7,9 @@ The tool is intended for digital forensics, technical analysis, data recovery, a
 
 ![Demo](https://github.com/DanielRosillo/open-android-extractor/blob/main/preview.png)
 
+
+![Demo](https://github.com/DanielRosillo/open-android-extractor/blob/main/preview_2.png)
+
 ---
 
 ## Disclaimer
