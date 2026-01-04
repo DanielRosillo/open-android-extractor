@@ -75,12 +75,15 @@ Ensure `adb` is available in your system PATH.
 ## Available on Windows and Linux
 
 
-## Installation
+## Installation & Usage
 
-git clone https://github.com/danielrosillo/OpenAndroidExtractor.git
-cd OpenAndroidExtractor
-python app.py
+- Enable Developer Mode on the device.
+- Connect the device and enable USB debugging.
+- Download the latest release for Windows or Linux.
+- Open the application.
 
+Note: extractor.apk must be located in the same directory as the executable.
+Note: Extracted files are saved in a folder (named with a UUID) in the same directory as the executable.
 
 ## License
 
@@ -101,6 +104,7 @@ on newer Android versions.
 
 ## TODO
 - Restore options.
+- Extract calendar and other data.
 
 
 ## Contact
