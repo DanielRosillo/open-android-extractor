@@ -22,6 +22,7 @@ import os
 import subprocess
 import sys
 from datetime import datetime
+from tkinter import filedialog
 
 BG = "#f2f4f8"
 SIDEBAR_BG = "#ffffff"
@@ -31,10 +32,11 @@ TEXT = "#1f2937"
 MUTED = "#6b7280"
 class ADBTool(tk.Tk):
 
-    DEVICE_ID= ""
+    DEVICE_ID = ""
+    SERIAL = ""
     PKG = "com.duxgor25.systems.open_extractor"
     APK = "extractor.apk"
-    APP_VERSION = "1.0.0"
+    APP_VERSION = "1.0.1"
     APP_NAME = "Open Android Extractor"
 
     def __init__(self):
@@ -86,12 +88,14 @@ class ADBTool(tk.Tk):
         version.pack(pady=(0, 15))
 
         sections = [
-            ("My Phone", "My Phone"),
-            ("Folders", "Folders"),
-            ("Contacts", "Contacts"),
-            ("Messages", "Messages"),
-            ("Calls", "Calls"),
-            ("More", "More"),
+            ("MY PHONE", "My Phone"),
+            ("FOLDERS", "Folders"),
+            ("CONTACTS", "Contacts"),
+            ("MESSAGES", "Messages"),
+            ("CALLS", "Calls"),
+            ("MORE", "More"),
+            ("INSTALL","Install"),
+            ("RELOAD","Reload")
         ]
 
         for text, section in sections:
@@ -241,20 +245,110 @@ class ADBTool(tk.Tk):
 
     def show_section(self, name):
         self.clear_cards()
-        self.title_label.config(text=name)
+        self.title_label.config(text=ADBTool.DEVICE_ID)
+
+        if (name == "Install"):
+            self.install_apk_dialog()
+            return
+
+        if (name == "Reload"):
+            self.check_devices()
+            return
 
         if name == "My Phone":
+            self.max_cols = 5
             if not self.devices_connected:
                 self.info_card("Estado", "Device not connected")
                 return
 
             info = self.get_device_info()
-            self.info_card("Android", f"{info['android']} (SDK {info['sdk']})")
-            self.info_card("Brand", info["brand"])
-            self.info_card("Model", info["model"])
-            self.info_card("Serial", info["serial"])
-            self.info_card("Resolution", info["resolution"].replace("Physical size: ", ""))
-            self.info_card("Density", info["density"].replace("Physical density: ", ""))
+
+            # --- Android / Build ---
+            self.info_card(
+                "Android",
+                f"{info['android_version']} (SDK {info['sdk']})"
+            )
+
+            self.info_card(
+                "Security Patch",
+                info["security_patch"]
+            )
+
+            self.info_card(
+                "Build ID",
+                info["build_id"]
+            )
+
+            # --- Device ---
+            self.info_card(
+                "Manufacturer",
+                info["manufacturer"]
+            )
+
+            self.info_card(
+                "Brand",
+                info["brand"]
+            )
+
+            self.info_card(
+                "Model",
+                info["model"]
+            )
+
+            self.info_card(
+                "Device",
+                info["device"]
+            )
+
+            self.info_card(
+                "Hardware",
+                info["hardware"]
+            )
+
+            # --- Identifiers ---
+            self.info_card(
+                "Serial",
+                info["serial"]
+            )
+
+            # --- Display ---
+            self.info_card(
+                "Resolution",
+                info["resolution"]
+            )
+
+            self.info_card(
+                "Density",
+                info["density"]
+            )
+
+            # --- Memory / CPU ---
+            self.info_card(
+                "RAM",
+                info["ram"]
+            )
+
+            self.info_card(
+                "CPU / SoC",
+                info["cpu"]
+            )
+
+            # --- Security ---
+            self.info_card(
+                "SELinux",
+                info["selinux"]
+            )
+
+            self.info_card(
+                "Encryption",
+                info["encryption"]
+            )
+
+            self.info_card(
+                "IP Address",
+                info["ip"]
+            )
+
             level = None
             for line in info["battery"].splitlines():
                 if line.strip().startswith("level:"):
@@ -264,8 +358,10 @@ class ADBTool(tk.Tk):
 
             self.info_card("Battery", str(level)+"%")
 
-        if name == "Folders":
 
+
+        if name == "Folders":
+            self.max_cols = 4
             self.card(
                 "Dump All",
                 "Create a full backup of the device storage using ADB.",
@@ -398,7 +494,6 @@ class ADBTool(tk.Tk):
 
                 lines = output.splitlines()[1:] 
                 self.devices_connected = False
-                self.current_device = None
 
                 if not lines:
                     self.status.config(
@@ -406,32 +501,36 @@ class ADBTool(tk.Tk):
                         bg="#fee2e2",
                         fg="#991b1b",
                     )
+                    self.clear_cards()
+                    self.info_card("Estado", "Device not connected")
                     return
 
                 for line in lines:
                     if "\tdevice" in line:
-                        serial = line.split()[0]
-                        self.devices_connected = True
-                        self.current_device = serial
+                        
+                        if ADBTool.SERIAL != line.split()[0]:
+                            ADBTool.SERIAL = line.split()[0]
+                            info = self.get_device_info()
+                            random_uuid = uuid.uuid4()
+                            ADBTool.DEVICE_ID = info["model"] + "-" + str(random_uuid)
+
+                            directory_path = Path(ADBTool.DEVICE_ID)
+                            directory_path.mkdir(parents=True, exist_ok=True)
 
                         self.status.config(
-                            text=f"Device connected: {serial}",
-                            bg="#dcfce7",
-                            fg="#166534",
+                        text=f"Device connected: {ADBTool.SERIAL }",
+                        bg="#dcfce7",
+                        fg="#166534",
                         )
-
-                        info = self.get_device_info()
-                        random_uuid = uuid.uuid4()
-                        ADBTool.DEVICE_ID = info["model"] + "-" + str(random_uuid)
-
-                        directory_path = Path(ADBTool.DEVICE_ID)
-                        directory_path.mkdir(parents=True, exist_ok=True)
-
-
+                        
+                        self.devices_connected = True
                         self.after(0, lambda: self.show_section("My Phone"))
+
                         return
 
                     elif "\tunauthorized" in line:
+                        self.clear_cards()
+                        self.info_card("Estado", "Device not connected")
                         self.status.config(
                             text="Device not authorized (accept the USB permission)",
                             bg="#fef3c7",
@@ -440,6 +539,8 @@ class ADBTool(tk.Tk):
                         return
 
                     elif "\toffline" in line:
+                        self.clear_cards()
+                        self.info_card("Estado", "Device not connected")
                         self.status.config(
                             text="Device offline",
                             bg="#fef3c7",
@@ -447,6 +548,8 @@ class ADBTool(tk.Tk):
                         )
                         return
 
+                self.clear_cards()
+                self.info_card("Estado", "Device not connected")
                 self.status.config(
                     text="Unknown Device",
                     bg="#fef3c7",
@@ -454,12 +557,14 @@ class ADBTool(tk.Tk):
                 )
 
             except Exception as e:
+                self.devices_connected = False
                 self.status.config(
                     text="Error from adb",
                     bg="#fee2e2",
                     fg="#991b1b",
                 )
                 self.console.insert(tk.END, f"{e}\n")
+                print( f"\nError: {e}\n")
 
         threading.Thread(target=task, daemon=True).start()
 
@@ -506,33 +611,77 @@ class ADBTool(tk.Tk):
         if self.card_col >= self.max_cols:
             self.card_col = 0
             self.card_row += 1
-
+            
     def get_device_info(self):
         info = {}
 
         commands = {
-            "android": "adb shell getprop ro.build.version.release",
+            # Android / Build
+            "android_version": "adb shell getprop ro.build.version.release",
             "sdk": "adb shell getprop ro.build.version.sdk",
-            "brand": "adb shell getprop ro.product.manufacturer",
+            "security_patch": "adb shell getprop ro.build.version.security_patch",
+            "build_id": "adb shell getprop ro.build.display.id",
+            "fingerprint": "adb shell getprop ro.build.fingerprint",
+
+            # Device
+            "manufacturer": "adb shell getprop ro.product.manufacturer",
+            "brand": "adb shell getprop ro.product.brand",
             "model": "adb shell getprop ro.product.model",
+            "device": "adb shell getprop ro.product.device",
+            "hardware": "adb shell getprop ro.hardware",
+
+            # Identifiers
             "serial": "adb get-serialno",
+
+            # Display
             "resolution": "adb shell wm size",
             "density": "adb shell wm density",
+
+            # Battery 
             "battery": "adb shell dumpsys battery",
+
+            # CPU / RAM
+            "cpu": "adb shell getprop ro.hardware",
+            "ram": "adb shell cat /proc/meminfo | head -n 1",
+
+            # Security
+            "selinux": "adb shell getenforce",
+            "encryption": "adb shell getprop ro.crypto.state",
+
+            # Network
+            "wifi_state": "adb shell dumpsys wifi | grep 'Wi-Fi is'",
+            "ip": "adb shell ip addr show wlan0 | grep 'inet '",
+
         }
 
         for key, cmd in commands.items():
             try:
                 result = subprocess.check_output(
-                    cmd, shell=True, text=True
+                    cmd,
+                    shell=True,
+                    stderr=subprocess.DEVNULL,
+                    text=True
                 ).strip()
-                info[key] = result
-            except:
+
+                if key == "resolution":
+                    result = result.replace("Physical size:", "").strip()
+
+                elif key == "density":
+                    result = result.replace("Physical density:", "").strip()
+
+                elif key == "ram":
+                    result = result.split(":")[-1].strip()
+
+                elif key == "ip":
+                    result = result.split()[1] if result else "N/A"
+
+                info[key] = result if result else "N/A"
+
+            except Exception:
                 info[key] = "N/A"
 
-    
         return info
-    
+
     def open_filde_browser(self):
         if sys.platform.startswith("win"):
             os.startfile(ADBTool.DEVICE_ID)
@@ -756,17 +905,39 @@ class ADBTool(tk.Tk):
     def backup_screenshots(self):
         def task():
             DEST = os.path.join(os.getcwd(), ADBTool.DEVICE_ID)
-            DATA_DIR = os.path.join(DEST, "data")
+            DATA_DIR = os.path.join(DEST, "Screenshots")
+
+            possible_paths = [
+                "/storage/emulated/0/Pictures/Screenshots",
+                "/storage/emulated/0/DCIM/Screenshots",
+            ]
 
             try:
                 os.makedirs(DATA_DIR, exist_ok=True)
 
-                self.console.insert(tk.END, "Copying screenshots from device...\n")
+                self.console.insert(
+                    tk.END, "Detecting screenshots folder on device...\n"
+                )
+                self.console.see(tk.END)
+
+                source_path = None
+                for path in possible_paths:
+                    if self.adb_path_exists(path):
+                        source_path = path
+                        break
+
+                if not source_path:
+                    raise Exception("Screenshots folder not found on device.")
+
+                self.console.insert(
+                    tk.END, f"Using source path: {source_path}\n"
+                )
                 self.console.see(tk.END)
 
                 subprocess.run(
-                    'adb pull "/storage/emulated/0/DCIM/Screenshots" "{}"'.format(DATA_DIR),
-                    shell=True
+                    f'adb pull "{source_path}" "{DATA_DIR}"',
+                    shell=True,
+                    check=True
                 )
 
                 self.console.insert(
@@ -776,13 +947,24 @@ class ADBTool(tk.Tk):
 
                 self.notify_success("Screenshots backup completed.")
                 self.open_filde_browser()
+
             except Exception as e:
-                self.notify_error(f"ADB error: {e}")
+                self.notify_error(f"Screenshots backup failed: {e}")
                 self.console.insert(tk.END, f"\nError: {e}\n")
                 print( f"\nError: {e}\n")
 
         threading.Thread(target=task, daemon=True).start()
 
+    def adb_path_exists(self,path):
+        result = subprocess.run(
+            f'adb shell "[ -d {path} ] && echo OK"',
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            text=True,
+        )
+        return "OK" in result.stdout
+        
     def backup_recordings(self):
         def task():
             DEST = os.path.join(os.getcwd(), ADBTool.DEVICE_ID)
@@ -824,16 +1006,6 @@ class ADBTool(tk.Tk):
                 "/storage/emulated/0/Downloads",
             ]
 
-            def adb_path_exists(path):
-                result = subprocess.run(
-                    f'adb shell "[ -d {path} ] && echo OK"',
-                    shell=True,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.DEVNULL,
-                    text=True,
-                )
-                return "OK" in result.stdout
-
             try:
                 os.makedirs(DATA_DIR, exist_ok=True)
 
@@ -842,7 +1014,7 @@ class ADBTool(tk.Tk):
 
                 source_path = None
                 for path in possible_paths:
-                    if adb_path_exists(path):
+                    if self.adb_path_exists(path):
                         source_path = path
                         break
 
@@ -1220,6 +1392,77 @@ class ADBTool(tk.Tk):
                 check=True
             )
             self.open_filde_browser()
-    
+
+    def install_apk(self, apk_path):
+        def task():
+            try:
+                if not os.path.exists(apk_path):
+                    raise Exception("APK file not found")
+
+                android_version = subprocess.check_output(
+                    "adb shell getprop ro.build.version.release",
+                    shell=True,
+                    text=True
+                ).strip()
+
+                major = int(android_version.split(".")[0])
+
+                self.console.insert(
+                    tk.END,
+                    f"Android detected: {android_version}\n"
+                    f"Installing APK:\n{apk_path}\n\n"
+                )
+                self.console.see(tk.END)
+
+                if major >= 15:
+                    cmd = f'adb install --bypass-low-target-sdk-block -r "{apk_path}"'
+                else:
+                    cmd = f'adb install -r "{apk_path}"'
+
+                process = subprocess.Popen(
+                    cmd,
+                    shell=True,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    text=True
+                )
+
+                for line in process.stdout:
+                    self.console.insert(tk.END, line)
+                    self.console.see(tk.END)
+
+                process.wait()
+
+                if process.returncode != 0:
+                    raise Exception("ADB install failed")
+
+                self.console.insert(
+                    tk.END, "\nAPK installed successfully.\n"
+                )
+                self.console.see(tk.END)
+
+                self.notify_success("APK installed successfully")
+                self.show_section("My Phone")
+
+            except Exception as e:
+                self.notify_error(f"ADB error: {e}")
+                self.console.insert(tk.END, f"\nError: {e}\n")
+                print( f"\nError: {e}\n")
+
+        threading.Thread(target=task, daemon=True).start()
+
+    def install_apk_dialog(self):
+
+        apk_path = filedialog.askopenfilename(
+            title="Select APK to install",
+            filetypes=[("Android APK", "*.apk")]
+        )
+
+        if not apk_path:
+            self.show_section("My Phone")
+            return
+
+        self.install_apk(apk_path)
+
 if __name__ == "__main__":
     ADBTool().mainloop()
