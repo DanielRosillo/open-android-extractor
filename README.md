@@ -113,7 +113,7 @@ on newer Android versions.
 
 ## Contact
 
-Developed by  **Duxgor25**(VHS_DREAMS25) - danielrosillo@outlook.es
+Developed by  **Duxgor25**(VHS_DREAMS25) - danielrosillodev@gmail.com
 Lux ex Tenebris
 
 If you find this project useful, consider giving it a ⭐ on GitHub.
